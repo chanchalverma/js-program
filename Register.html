@@ -1,0 +1,241 @@
+<html>
+  <head>
+    <style>
+      .container {
+        margin: auto;
+        border: 2px solid gray;
+        max-width: 40%;
+        margin-top: 70;
+        background-color: whitesmoke;
+        height: auto;
+        padding-top: 30;
+      }
+      input {
+        display: block;
+        width: 100%;
+        padding: 4;
+      }
+      textarea {
+        display: block;
+        width: 100%;
+      }
+      body {
+        background-color: burlywood;
+      }
+      .image {
+        width: 20%;
+      }
+      .imgcontainer {
+        text-align: center;
+      }
+      h3 {
+        text-align: center;
+        color: green;
+      }
+      .main_section {
+        padding: 30;
+      }
+      span {
+        color: red;
+      }
+      input.btnregister {
+        color: white;
+        background-color: green;
+        padding: 5;
+      }
+      a.link {
+        color: blue;
+      }
+      .bottom_section {
+        background-color: lightgrey;
+        width: 100%;
+        height: 10%;
+        text-align: center;
+      }
+      
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="imgcontainer">
+        <img
+          src="C:\Users\varma\Desktop\images\img_avatar2.png"
+          alt="avatar"
+          class="image"
+        />
+      </div>
+      <h3>Register</h3>
+      <div class="main_section">
+        <form>
+
+        <label>Email Id</label>
+        <input
+          type="text"
+          id="txtemail"
+          placeholder="Enter Email Id"
+         
+           required=""
+          onchange="validateEmail(document.getElementById('txtemail').value)"
+        />
+        <span id="showValidateEmail"></span>
+        <br /><br />
+
+        <label> Password</label>
+        <input
+          type="password"
+          id="txtpassword"
+          placeholder="Enter password"
+          required
+          onchange="validatePsd(document.getElementById('txtpassword').value)"
+        />
+        <span id="psdError"></span>
+        <br /><br />
+
+        <label>Confirm Password </label>
+        <input
+          type="password"
+          id="retype"
+          placeholder="Renter password"
+          required
+        />
+        <span id="validatePsd"></span>
+        <br /><br />
+
+        <label>Age</label>
+        <input type="number" placeholder="Enter Age" id="txtage" />
+        <br /><br />
+
+        <label>Address </label>
+        <textarea
+          rows="3"
+          cols="30"
+          id="txtaddress"
+          placeholder="Enter Address"
+        ></textarea>
+        <br /><br />
+        <input
+          type="button"
+          value="Register"
+          id="btnSubmit"
+          class="btnregister"
+          onclick="registerFunction(document.getElementById('txtemail').value,
+        document.getElementById('txtpassword').value,
+        document.getElementById('retype').value,document.getElementById('txtage').value,
+        document.getElementById('txtaddress').value,)"
+        />
+        <br /><br />
+        <input type="reset" value="Reset" />
+      </div>
+      <br />
+      <br />
+      <div class="bottom_section">
+        For Login <a href="login.html" class="link">Click here</a>
+      </div>
+      <br />
+      <span id="status" style="color: blue"></span>
+    </div>
+  </form>
+    <script>
+      //   var email = document.getElementById("txtemail").value;
+      //   var password = document.getElementById("txtpassword").value;
+      //   let retype = document.getElementById("retype").value;
+      //   let age = document.getElementById("txtage").value;
+      //   let address = document.getElementById("txtaddress").value;
+
+      let arry = [];
+      let obj = {};
+      let checkData;
+      let getStore = localStorage.getItem("data");
+      console.log("getst=", getStore);
+
+      function registerFunction(email, password, retype, age, address) {
+        console.log(email, password, retype, age, address);
+
+        obj.email = email;
+        obj.password = password;
+        obj.retype = retype;
+        obj.age = age;
+        obj.address = address;
+
+        console.log("obj=", obj);
+        if(email !="")
+        {
+        if (password != "" && retype != "") {
+          if (password === retype) {
+            if (getStore != null) {
+              //  let checkData = getStore.filter(i => i.email === email);
+              //  console.log("ch=", checkData);
+
+              // if(checkData[0].email !== email)
+
+              // console.log(checkData[0].email)
+              let oldData = JSON.parse(localStorage.getItem("data"));
+
+              checkData = oldData.filter(i => i.email === email);
+
+              //if (checkData[0].email !== email)
+              if (checkData == 0) {
+                console.log("ch=", checkData.length);
+                oldData.push(obj);
+                emailStorage = localStorage.setItem(
+                  "data",
+                  JSON.stringify(oldData)
+                );
+                alert("Your account is successfully Register");
+              } else
+                document.getElementById("showValidateEmail").innerHTML =
+                  "This email is already Exist";
+            } else {
+              console.log("not Null");
+              arry.push(obj);
+              emailStorage = localStorage.setItem("data", JSON.stringify(arry));
+              console.log("emst=", emailStorage);
+              alert("Your account is successfully Register");
+            }
+          } else
+            document.getElementById("validatePsd").innerHTML =
+              "Password and Confirm password must be same";
+        } else alert("Password or Confirm password cannot be empty");
+      }else alert("Email id cannot be empty");
+      }
+
+      function validateEmail(email) {
+        // let getstore = localStorage.getItem("email");
+        // if (getStore === email)
+        //   return (document.getElementById("showValidateEmail").innerHTML =
+        //     "This email is already Exist");
+
+        let oldData = JSON.parse(localStorage.getItem("data"));
+      //   if(email.match != "/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/")
+      //           {
+                  
+      //             return (document.getElementById("showValidateEmail").innerHTML =
+      //         "Enter Correct Email Id");
+      //           }
+      //  else 
+      if (getStore != null) 
+        {
+        
+            
+          checkData = oldData.filter(i => i.email === email);
+            
+          if (checkData != 0) 
+          {
+            return (document.getElementById("showValidateEmail").innerHTML =
+              "This email is already Exist");
+          }
+          
+      }
+    }
+
+    function validatePsd(password)
+    {
+      // if(password.match != "((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})")
+      // {
+      //   return(document.getElementById("psdError").innerHTML = "Enter good password which contains atleast one upper , lower case and digit ");
+      // }
+    }
+    </script>
+  
+</body>
+</html>

@@ -1,0 +1,106 @@
+<html>
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"
+    />
+    <style>
+      h1,
+      h2 {
+        color: sandybrown;
+        text-align: center;
+      }
+      body {
+        background-color: blanchedalmond;
+        /*  border: 1px solid black; */
+      }
+      #navStyle {
+        background-color: lightgrey;
+        border-color: white;
+      }
+      .container {
+        max-width: 40%;
+        display: block;
+        border: 1px solid black;
+        height: auto;
+        padding: 30;
+      }
+      .canvas {
+        width: 150;
+        display: block;
+      }
+    </style>
+    <script src="http://www.dukelearntoprogram.com/course1/common/js/cs101/SimpleImage.js"></script>
+    <nav class="navbar navbar-default" id="navStyle">
+      <ul class="nav navbar-nav">
+        <li><a href="#">Home</a></li>
+        <li><a href="API.html">API</a></li>
+      </ul>
+
+      <ul class="nav navbar-nav navbar-right">
+        <li id="dateShow"></li>
+        <li>
+          <a href="login.html"
+            ><span class="glyphicon glyphicon-log-out"></span>Logout</a
+          >
+        </li>
+      </ul>
+    </nav>
+
+    <h1 id="header">Welcome</h1>
+    <h2>Profile</h2>
+    <div class="container">
+      Profile Photo
+      <canvas id="ImageCanvas" class="canvas"></canvas>
+      <input
+        type="file"
+        value="file Upload"
+        id="fileUpload"
+        accept="image/*"
+        onchange="Upload()"
+      />
+
+      <br />
+      <br />
+
+      <label>Email Id :</label>
+      <label id="email"></label>
+    </div>
+    <body>
+      <script>
+        var dat = new Date();
+        var month = dat.getMonth() + 1;
+        document.getElementById("dateShow").innerHTML =
+          dat.getDate() + "/" + month + "/" + dat.getFullYear();
+        let obj = {},
+          getAll,
+          arr = [];
+        login = sessionStorage.getItem("isLogged");
+
+        if (login == 1) {
+          getEmail = sessionStorage.getItem("email");
+
+          document.getElementById("email").innerHTML = getEmail;
+
+          getAll = JSON.parse(localStorage.getItem("data"));
+          check = getAll.filter(a => a.email === getEmail);
+          console.log(check);
+          check.splice();
+          obj.image = document.getElementById("fileUpload").image;
+          obj.email = getEmail;
+          getAll.push(obj);
+          localStorage.setItem("imageData", JSON.stringify(getAll));
+        } else {
+          alert("Please Login your account");
+          window.location.href = "Login.html";
+        }
+        function Upload() {
+          var imgCanvas = document.getElementById("ImageCanvas");
+          var fileInput = document.getElementById("fileUpload");
+          var image = new SimpleImage(fileInput);
+          image.drawTo(imgCanvas);
+        }
+      </script>
+    </body>
+  </head>
+</html>

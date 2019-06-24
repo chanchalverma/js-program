@@ -1,0 +1,160 @@
+<html>
+  <head>
+    <style>
+      .container {
+        margin: auto;
+        border: 2px solid gray;
+
+        max-width: 40%;
+        margin-top: 70;
+        background-color: whitesmoke;
+        height: auto;
+        padding-top: 60;
+      }
+
+      body {
+        background-color: burlywood;
+      }
+
+      .image-container {
+        text-align: center;
+      }
+      .image {
+        width: 30%;
+
+        padding-bottom: 20;
+      }
+      input {
+        display: block;
+        width: 100%;
+        padding: 4;
+      }
+      input.btnlogin {
+        color: white;
+        background-color: green;
+        padding: 8;
+      }
+      a.link {
+        color: blue;
+      }
+      .main_section {
+        padding: 40;
+      }
+
+      .bottom_section {
+        width: 100%;
+        height: 10%;
+        padding-top: 30px;
+        background-color: lightpink;
+        text-align: center;
+      }
+
+      .btnContainer {
+        padding-top: 40;
+        text-align: center;
+      }
+      span {
+        color: red;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="image-container">
+        <img
+          src="C:\Users\varma\Desktop\images\img_avatar2.png"
+          alt="avatar"
+          class="image"
+        />
+      </div>
+      <div class="main_section">
+        <form>
+          <label>Email Id</label>
+          <input
+            type="text"
+            id="txtemail"
+            placeholder="  Enter Email Id"
+            required
+          />
+          <span id="emailStatus"></span>
+          <br /><br />
+          <label>Password</label>
+
+          <input
+            type="password"
+            id="txtpassword"
+            placeholder="  Enter Password"
+            required
+          />
+        </form>
+
+        <span id="status"></span>
+
+        <div class="btnContainer">
+          <input
+            type="submit"
+            id="btnLogin"
+            value="Login"
+            class="btnlogin"
+            onclick="loginFunction(document.getElementById('txtemail').value,document.getElementById('txtpassword').value)"
+          />
+
+          <br /><br />
+          <a href="Register.html" target="_self" class="link">
+            Click Here for Register
+          </a>
+        </div>
+      </div>
+
+      <div class="bottom_section">
+        <a href="Forgot.html" class="link">Forgot Password ?</a>
+      </div>
+    </div>
+
+    <script>
+      let getEmail, getPassword, getData, getValue;
+      // getEmail = localStorage.getItem("email");
+      // getPassword = localStorage.getItem("password");
+      getValueString = localStorage.getItem("data");
+
+      // console.log(getValue);
+
+      getValueObj = JSON.parse(getValueString);
+
+      LoginCheck = sessionStorage.getItem("isLogged");
+
+      if (LoginCheck == 1) {
+        sessionStorage.setItem("isLogged", 0);
+      }
+      function loginFunction(email, password) {
+        if (email != "" && password != "") {
+          if (getValueString != null) {
+            getData = getValueObj.filter(
+              data => data.email === email && data.password === password
+            );
+            if (getData != 0) {
+              sessionStorage.setItem("isLogged", 1);
+              // window.location.href = "http://www.w3schools.com";
+              sessionStorage.setItem("email", email);
+              sessionStorage.setItem("password", password);
+
+              window.location.href = "welcome.html";
+            } else
+              document.getElementById("status").innerHTML =
+                "Please enter correct Email Id or Password";
+          } else
+            document.getElementById("status").innerHTML =
+              "Register your account";
+        }
+        // else
+        // {
+        // if(email == "")
+        // document.getElementById("emailStatus").innerHTML ="Enter Email Id";
+        // else
+        // document.getElementById("psdStatus").innerHTML = "Enter password";
+        // }
+      }
+    </script>
+  </body>
+</html>

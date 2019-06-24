@@ -1,0 +1,62 @@
+<html>
+  <head>
+    <style>
+      h2 {
+        color: whitesmoke;
+      }
+      body {
+        background-color: gray;
+        color: aliceblue;
+      }
+      #showDetail {
+        white-space: pre;
+      }
+    </style>
+
+    <h2>Getting value from API and store in local storage</h2>
+  </head>
+  <body>
+    <input type="button" onclick="getAPI()" value="get API" />
+    <p id="display"></p>
+    <input type="text" id="txtname" />
+    <input
+      type="button"
+      value="Show Details"
+      onclick="getDetails(document.getElementById('txtname').value)"
+    />
+    <p id="showDetail"></p>
+    <div>
+      <span>Abc</span>
+      <span>abc@gmail.com</span>
+    </div>
+    <script>
+      function getAPI() {
+        window
+          .fetch("https://jsonplaceholder.typicode.com/users")
+          .then(resp => resp.json())
+          .then(function(data) {
+            localStorage.setItem("data", JSON.stringify(data));
+            console.log(data);
+            let name = data.map(
+              d => (document.getElementById("display").innerHTML = d.name)
+            );
+            console.log(name);
+
+            document.getElementById("display").innerHTML =
+              "<br/>" + name + "<br/>";
+          });
+      }
+      function getDetails(name) {
+        console.log(name);
+        getData = JSON.parse(localStorage.getItem("data"));
+        let detail = getData.filter(d => d.name === name);
+        document.getElementById("showDetail").innerHTML = JSON.stringify(
+          detail,
+          null,
+          8
+        );
+        console.log(detail);
+      }
+    </script>
+  </body>
+</html>

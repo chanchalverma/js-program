@@ -1,0 +1,165 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"
+    />
+
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script> -->
+    <link rel="stylesheet" href="../assets/css/style.css" />
+
+    <h1>Visting Card</h1>
+
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="#">Home</a></li>
+        </ul>
+        <span></span>
+        <div>
+          <ul style="text-align: center">
+            <span class=" glyphicon glyphicon-search"></span>
+            <input type="search" id="txtSearch" />
+            <input
+              type="submit"
+              value="Search"
+              onclick="searchItem(document.getElementById('txtSearch').value)"
+            />
+          </ul>
+        </div>
+        <ul class="nav navbar-nav navbar-right">
+          <li id="display-date"></li>
+        </ul>
+      </div>
+    </nav>
+  </head>
+
+  <body>
+    <div class="card-container"><h3>Loading....</h3></div>
+    <div id="model-root" class="model">
+      <div class="model-section">
+        <h3>Contact Information</h3>
+        <span class="close">&times</span>
+        <div class="card-root" id="card-root">
+          <div class="card-section">
+            <label>Name: </label><label id="lbl-name"></label><br />
+            <label>Company: </label><label id="lbl-company"></label> <br />
+            <label>Address:</label><label id="lbl-address"></label><br />
+            <label>Contact:</label><label id="lbl-contact"></label> <br />
+            <label>Email Id:</label>
+            <label id="lbl-email"></label><br />
+            <label>Website:</label><label id="lbl-website"></label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      var d = new Date();
+      document.getElementById("display-date").innerHTML =
+        d.getDate() + "/" + d.getMonth() + "/" + d.getFullYear();
+
+      var images = [
+        "../assets/images/pic1.jpg",
+        "../assets/images/pic2.jpg",
+        "../assets/images/pic3.jpg",
+        "../assets/images/pic4.jpg",
+        "../assets/images/pic5.jpg",
+        "../assets/images/pic6.jpg",
+        "../assets/images/pic7.jpg",
+        "../assets/images/pic8.jpg",
+        "../assets/images/pic9.jpg",
+        "../assets/images/pic10.jpg"
+      ];
+
+      function displayData(data) {
+        let card = "";
+        for (var i = 0; i < data.length; i++) {
+          if (data[i] !== undefined && data[i] !== null) {
+            card += "<div class ='card'>";
+            card += "<div class = 'image-container'>";
+            card += "<img  class ='image' src = '" + images[i] + "'/>";
+            card += "</div>";
+            card += "<h2>" + data[i].name + "</h2>";
+            card +=
+              "<div><span class='glyphicon glyphicon-envelope email-align'>" +
+              "<span>" +
+              data[i].email +
+              "</span>";
+            card +=
+              "<label> Company:</label><span>" +
+              data[i].company.name +
+              "</span></div>";
+            card +=
+              "<div><button class ='btn-contact' onClick='onCardClick(" +
+              data[i].id +
+              ", this);'>Contact</button></div>";
+            card += "</div>";
+          }
+        }
+        document.getElementsByClassName("card-container").innerHTML = card;
+      }
+
+      function onCardClick(id) {
+        let getData = localStorage.getItem("data");
+        getValue = JSON.parse(getData);
+        getClickItem = getValue.filter(a => a.id === id);
+        var modal = document.getElementById("model-root");
+        modal.style.display = "block";
+        var span = document.getElementsByClassName("close")[0];
+        span.onclick = function() {
+          modal.style.display = "none";
+        };
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+          if (event.target == modal) {
+            modal.style.display = "none";
+          }
+        };
+        getClickItem.map(data => {
+          name = data.name;
+          company = data.company.name;
+          address = data.address;
+          contact = data.phone;
+          email = data.email;
+          website = data.website;
+          return data;
+          console.log(data);
+          console.log(name);
+        });
+
+        setElement("lbl-name", name);
+        setElement("lbl-company", company);
+        setElement("lbl-address", address);
+        setElement("lbl-contact", contact);
+        setElement("lbl-email", email);
+        setElement("lbl-website", website);
+
+        function setElement(tagName, tagValue) {
+          document.getElementById(tagName).innerHTML = tagValue;
+        }
+
+        // document.getElementById("card-root").innerHTML = JSON.stringify(
+        //   getClickItem,
+        //   null,
+        //   8
+        // );
+      }
+
+      window
+        .fetch("https://jsonplaceholder.typicode.com/users")
+        .then(resp => resp.json())
+        .then(function(data) {
+          localStorage.setItem("data", JSON.stringify(data));
+          displayData(data);
+        });
+
+      function searchItem(searchName) {
+        let getData = JSON.parse(localStorage.getItem("data"));
+        getName = getData.filter(a => a.name === searchName);
+        displayData(getName);
+      }
+    </script>
+  </body>
+</html>
