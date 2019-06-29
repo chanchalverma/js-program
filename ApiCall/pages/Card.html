@@ -37,7 +37,9 @@
   </head>
 
   <body>
-    <div class="card-container"><h3>Loading....</h3></div>
+    <div id="card-container" class="card-container">
+      <h3>Loading....</h3>
+    </div>
     <div id="model-root" class="model">
       <div class="model-section">
         <h3>Contact Information</h3>
@@ -74,9 +76,13 @@
       ];
 
       function displayData(data) {
+        console.log(data);
         let card = "";
         for (var i = 0; i < data.length; i++) {
+          console.log("hi======");
           if (data[i] !== undefined && data[i] !== null) {
+            console.log("hi====== 11");
+
             card += "<div class ='card'>";
             card += "<div class = 'image-container'>";
             card += "<img  class ='image' src = '" + images[i] + "'/>";
@@ -98,7 +104,8 @@
             card += "</div>";
           }
         }
-        document.getElementsByClassName("card-container").innerHTML = card;
+        document.getElementById("card-container").innerHTML = card;
+        //  document.write(card);
       }
 
       function onCardClick(id) {
@@ -120,7 +127,7 @@
         getClickItem.map(data => {
           name = data.name;
           company = data.company.name;
-          address = data.address;
+          address = data.address.city;
           contact = data.phone;
           email = data.email;
           website = data.website;
